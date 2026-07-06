@@ -37,11 +37,6 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("success", false, "error", "Invalid email or password"));
         }
 
-        // If a specific role is selected during login, update the role for this session/mock representation
-        if (request.getRole() != null && !request.getRole().isEmpty()) {
-            user.setRole(request.getRole());
-        }
-
         return ResponseEntity.ok(Map.of("success", true, "user", user));
     }
 

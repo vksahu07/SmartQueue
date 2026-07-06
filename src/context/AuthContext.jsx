@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  const login = async (email, password, selectedRole = 'customer') => {
+  const login = async (email, password) => {
     // Simulated validation
     if (!email || !password) return { success: false, error: 'Please fill in all fields' };
     
@@ -24,12 +24,12 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, role: selectedRole })
+        body: JSON.stringify({ email, password })
       });
       const data = await response.json();
       if (response.ok && data.success) {
         setUser(data.user);
-        return { success: true };
+        return { success: true, user: data.user };
       } else {
         return { success: false, error: data.error || 'Login failed' };
       }

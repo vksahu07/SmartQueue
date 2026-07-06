@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, ChevronRight, Shield, User, Briefcase } from 'lucide-react';
+import { Lock, Mail, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('customer@smartqueue.com');
-  const [password, setPassword] = useState('password');
-  const [role, setRole] = useState('customer');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -22,10 +21,10 @@ export default function Login() {
     setLoading(true);
     
     try {
-      const res = await login(email, password, role);
+      const res = await login(email, password);
       setLoading(false);
       if (res.success) {
-        toast.success(`Logged in as ${role.toUpperCase()}`);
+        toast.success(`Logged in as ${res.user.role.toUpperCase()}`);
         navigate('/');
       } else {
         toast.error(res.error || 'Login failed');
@@ -33,18 +32,6 @@ export default function Login() {
     } catch (err) {
       setLoading(false);
       toast.error('Connection error: backend is not reachable');
-    }
-  };
-
-  // Prefill helper
-  const handleRoleSelection = (selectedRole) => {
-    setRole(selectedRole);
-    if (selectedRole === 'customer') {
-      setEmail('customer@smartqueue.com');
-    } else if (selectedRole === 'staff') {
-      setEmail('staff@smartqueue.com');
-    } else if (selectedRole === 'admin') {
-      setEmail('admin@smartqueue.com');
     }
   };
 
@@ -64,50 +51,6 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Role Picker (Tabs) */}
-          <div className="mb-6">
-            <label className="block text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3 text-center">
-              Select Portal / Role
-            </label>
-            <div className="grid grid-cols-3 gap-2 bg-slate-100/80 dark:bg-slate-950 p-1.5 rounded-xl border border-slate-200/20">
-              <button
-                type="button"
-                onClick={() => handleRoleSelection('customer')}
-                className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                  role === 'customer'
-                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-md shadow-slate-200/30'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                }`}
-              >
-                <User className="h-4.5 w-4.5 mb-1" />
-                <span>Customer</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleRoleSelection('staff')}
-                className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                  role === 'staff'
-                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-md shadow-slate-200/30'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                }`}
-              >
-                <Briefcase className="h-4.5 w-4.5 mb-1" />
-                <span>Staff</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleRoleSelection('admin')}
-                className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                  role === 'admin'
-                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-md shadow-slate-200/30'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                }`}
-              >
-                <Shield className="h-4.5 w-4.5 mb-1" />
-                <span>Admin</span>
-              </button>
-            </div>
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -196,7 +139,7 @@ export default function Login() {
 
           {/* Social Logins */}
           <button
-            onClick={() => { toast.success('Google Login simulated successfully'); login('google.user@gmail.com', 'password', 'customer'); navigate('/'); }}
+            onClick={() => { toast.success('Google Login simulated successfully'); login('google.user@gmail.com', 'password'); navigate('/'); }}
             className="w-full flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm"
           >
             <svg className="h-4.5 w-4.5 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
