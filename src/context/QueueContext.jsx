@@ -3,6 +3,8 @@ import toast from 'react-hot-toast';
 
 const QueueContext = createContext();
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 export const QueueProvider = ({ children }) => {
   const [tickets, setTickets] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -22,25 +24,25 @@ export const QueueProvider = ({ children }) => {
   // Fetch all initial data from backend
   const fetchData = async () => {
     try {
-      const branchesRes = await fetch('http://localhost:8080/api/queue/branches');
+      const branchesRes = await fetch(`${API_BASE_URL}/api/queue/branches`);
       if (branchesRes.ok) setBranches(await branchesRes.json());
 
-      const depsRes = await fetch('http://localhost:8080/api/queue/departments');
+      const depsRes = await fetch(`${API_BASE_URL}/api/queue/departments`);
       if (depsRes.ok) setDepartments(await depsRes.json());
 
-      const servicesRes = await fetch('http://localhost:8080/api/queue/services');
+      const servicesRes = await fetch(`${API_BASE_URL}/api/queue/services`);
       if (servicesRes.ok) setServices(await servicesRes.json());
 
-      const staffRes = await fetch('http://localhost:8080/api/queue/staff');
+      const staffRes = await fetch(`${API_BASE_URL}/api/queue/staff`);
       if (staffRes.ok) setStaff(await staffRes.json());
 
-      const ticketsRes = await fetch('http://localhost:8080/api/queue/tickets');
+      const ticketsRes = await fetch(`${API_BASE_URL}/api/queue/tickets`);
       if (ticketsRes.ok) setTickets(await ticketsRes.json());
 
-      const announcementsRes = await fetch('http://localhost:8080/api/queue/announcements');
+      const announcementsRes = await fetch(`${API_BASE_URL}/api/queue/announcements`);
       if (announcementsRes.ok) setAnnouncements(await announcementsRes.json());
 
-      const settingsRes = await fetch('http://localhost:8080/api/queue/settings');
+      const settingsRes = await fetch(`${API_BASE_URL}/api/queue/settings`);
       if (settingsRes.ok) setSystemSettings(await settingsRes.json());
     } catch (err) {
       console.error('Error fetching queue data from backend:', err);
@@ -57,7 +59,7 @@ export const QueueProvider = ({ children }) => {
   // Methods
   const bookToken = async (details) => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/tickets', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/tickets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details)
@@ -77,7 +79,7 @@ export const QueueProvider = ({ children }) => {
 
   const cancelToken = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/queue/tickets/${id}/cancel`, {
+      const response = await fetch(`${API_BASE_URL}/api/queue/tickets/${id}/cancel`, {
         method: 'PUT'
       });
       if (response.ok) {
@@ -94,7 +96,7 @@ export const QueueProvider = ({ children }) => {
 
   const callNext = async (departmentName, staffName) => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/call-next', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/call-next`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ departmentName, staffName })
@@ -115,7 +117,7 @@ export const QueueProvider = ({ children }) => {
 
   const completeTicket = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/queue/tickets/${id}/complete`, {
+      const response = await fetch(`${API_BASE_URL}/api/queue/tickets/${id}/complete`, {
         method: 'PUT'
       });
       if (response.ok) {
@@ -132,7 +134,7 @@ export const QueueProvider = ({ children }) => {
 
   const skipTicket = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/queue/tickets/${id}/skip`, {
+      const response = await fetch(`${API_BASE_URL}/api/queue/tickets/${id}/skip`, {
         method: 'PUT'
       });
       if (response.ok) {
@@ -149,7 +151,7 @@ export const QueueProvider = ({ children }) => {
 
   const serveTicket = async (id, staffName) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/queue/tickets/${id}/serve`, {
+      const response = await fetch(`${API_BASE_URL}/api/queue/tickets/${id}/serve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ staffName })
@@ -168,7 +170,7 @@ export const QueueProvider = ({ children }) => {
 
   const addDepartment = async (name, code) => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/departments', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/departments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, code })
@@ -185,7 +187,7 @@ export const QueueProvider = ({ children }) => {
 
   const addStaff = async (name, depId) => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/staff', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/staff`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, depId })
@@ -202,7 +204,7 @@ export const QueueProvider = ({ children }) => {
 
   const postAnnouncement = async (text, type = 'info') => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/announcements', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/announcements`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, type })
@@ -218,7 +220,7 @@ export const QueueProvider = ({ children }) => {
 
   const updateSettings = async (newSettings) => {
     try {
-      const response = await fetch('http://localhost:8080/api/queue/settings', {
+      const response = await fetch(`${API_BASE_URL}/api/queue/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSettings)

@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('auth_user');
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     if (!email || !password) return { success: false, error: 'Please fill in all fields' };
     
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: 'Passwords do not match' };
     }
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, password })
@@ -72,7 +74,7 @@ export const AuthProvider = ({ children }) => {
 
   const switchRole = async (role) => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/switch-role', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/switch-role`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role })
@@ -90,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchAllUsers = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/users');
+      const response = await fetch(`${API_BASE_URL}/api/auth/users`);
       if (response.ok) {
         const data = await response.json();
         setAllUsers(data);
@@ -102,7 +104,7 @@ export const AuthProvider = ({ children }) => {
 
   const deleteUser = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/auth/users/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/users/${id}`, {
         method: 'DELETE'
       });
       if (response.ok) {
