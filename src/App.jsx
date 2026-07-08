@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -20,11 +20,13 @@ import { Ticket, Menu } from 'lucide-react';
 
 // Wrapper layout for Dashboards
 function DashboardLayout({ children }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      <Navbar />
-      <div className="flex flex-1">
-        <Sidebar />
+      <Navbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <div className="flex flex-1 relative overflow-hidden">
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <main className="flex-1 p-6 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto max-h-[calc(100vh-4rem)]">
           {children}
         </main>

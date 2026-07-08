@@ -2,24 +2,31 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useQueue } from '../context/QueueContext';
-import { Bell, Sun, Moon, LogOut, ChevronDown, User, Shield, Briefcase, RefreshCw } from 'lucide-react';
+import { Bell, Sun, Moon, LogOut, ChevronDown, User, Shield, Briefcase, RefreshCw, Menu } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-export default function Navbar() {
+export default function Navbar({ onToggleSidebar }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { announcements } = useQueue();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-
-
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/75 dark:bg-slate-900/75 backdrop-blur-md transition-colors duration-300">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+          {/* Left section: Hamburger + Logo */}
           <div className="flex items-center gap-3">
+            {/* Hamburger Menu (Mobile Only) */}
+            <button
+              onClick={onToggleSidebar}
+              className="p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden"
+              aria-label="Toggle sidebar"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/20">
               <span className="font-sans text-xl font-extrabold tracking-tight">Q</span>
             </div>
