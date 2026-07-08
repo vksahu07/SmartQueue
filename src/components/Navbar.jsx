@@ -63,7 +63,7 @@ export default function Navbar({ onToggleSidebar }) {
               {showNotifications && (
                 <>
                   <div className="fixed inset-0 z-30" onClick={() => setShowNotifications(false)} />
-                  <div className="absolute right-0 mt-2 w-80 origin-top-right rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-xl z-40">
+                  <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 origin-top-right rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 shadow-xl z-40">
                     <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 dark:border-slate-800">
                       <span className="font-semibold text-sm text-slate-900 dark:text-white">Announcements & Alerts</span>
                       <span className="text-[10px] bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-semibold px-2 py-0.5 rounded-full">New</span>
