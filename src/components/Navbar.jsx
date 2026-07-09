@@ -27,11 +27,16 @@ export default function Navbar({ onToggleSidebar }) {
               <Menu className="h-6 w-6" />
             </button>
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/20">
-              <span className="font-sans text-xl font-extrabold tracking-tight">Q</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 shadow-sm transition-transform hover:scale-105 duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5.5 w-5.5">
+                <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                <path d="M9 5v14" strokeDasharray="3 3" />
+                <circle cx="15.5" cy="12" r="3.5" />
+                <path d="M18 14.5l3 3" />
+              </svg>
             </div>
             <div>
-              <span className="hidden sm:inline font-sans text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+              <span className="hidden sm:inline font-sans text-lg font-extrabold text-slate-900 dark:text-white tracking-tight bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
                 Q-Flow
               </span>
             </div>

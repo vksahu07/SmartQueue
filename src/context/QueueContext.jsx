@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { useAuth } from './AuthContext';
 
 const QueueContext = createContext();
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
 export const QueueProvider = ({ children }) => {
+  const { user } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [staff, setStaff] = useState([]);
@@ -21,28 +23,25 @@ export const QueueProvider = ({ children }) => {
     emailConfig: 'smtp.smartqueue.com'
   });
 
-  // Fetch all initial data from backend
+  // Fetch all initial data from backend in parallel
   const fetchData = async () => {
     try {
-      const branchesRes = await fetch(`${API_BASE_URL}/api/queue/branches`);
+      const [branchesRes, depsRes, servicesRes, staffRes, ticketsRes, announcementsRes, settingsRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/queue/branches`),
+        fetch(`${API_BASE_URL}/api/queue/departments`),
+        fetch(`${API_BASE_URL}/api/queue/services`),
+        fetch(`${API_BASE_URL}/api/queue/staff`),
+        fetch(`${API_BASE_URL}/api/queue/tickets`),
+        fetch(`${API_BASE_URL}/api/queue/announcements`),
+        fetch(`${API_BASE_URL}/api/queue/settings`)
+      ]);
+
       if (branchesRes.ok) setBranches(await branchesRes.json());
-
-      const depsRes = await fetch(`${API_BASE_URL}/api/queue/departments`);
       if (depsRes.ok) setDepartments(await depsRes.json());
-
-      const servicesRes = await fetch(`${API_BASE_URL}/api/queue/services`);
       if (servicesRes.ok) setServices(await servicesRes.json());
-
-      const staffRes = await fetch(`${API_BASE_URL}/api/queue/staff`);
       if (staffRes.ok) setStaff(await staffRes.json());
-
-      const ticketsRes = await fetch(`${API_BASE_URL}/api/queue/tickets`);
       if (ticketsRes.ok) setTickets(await ticketsRes.json());
-
-      const announcementsRes = await fetch(`${API_BASE_URL}/api/queue/announcements`);
       if (announcementsRes.ok) setAnnouncements(await announcementsRes.json());
-
-      const settingsRes = await fetch(`${API_BASE_URL}/api/queue/settings`);
       if (settingsRes.ok) setSystemSettings(await settingsRes.json());
     } catch (err) {
       console.error('Error fetching queue data from backend:', err);
@@ -50,11 +49,22 @@ export const QueueProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!user) {
+      // Clear data on logout / when not logged in
+      setTickets([]);
+      setDepartments([]);
+      setStaff([]);
+      setBranches([]);
+      setServices([]);
+      setAnnouncements([]);
+      return;
+    }
+
     fetchData();
     // Poll every 5 seconds for real-time synchronization simulation
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user]);
 
   // Methods
   const bookToken = async (details) => {

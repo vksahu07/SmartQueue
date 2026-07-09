@@ -267,7 +267,14 @@ export default function LandingPage() {
       <footer className="border-t border-slate-200 dark:border-slate-800/80 py-12 px-6 bg-white dark:bg-slate-950 text-slate-500 text-xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-extrabold text-sm shadow">Q</div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4.5 w-4.5">
+                <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                <path d="M9 5v14" strokeDasharray="3 3" />
+                <circle cx="15.5" cy="12" r="3.5" />
+                <path d="M18 14.5l3 3" />
+              </svg>
+            </div>
             <span className="font-bold text-slate-900 dark:text-white font-sans text-sm">Q-Flow</span>
           </div>
           <div className="flex flex-wrap justify-center gap-6 font-semibold">
